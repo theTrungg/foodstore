@@ -15,12 +15,12 @@ public class Ingredient {
     private String icate;
     private String name;
     private float price;
-    private Status status;
+    private int status;
 
     public Ingredient() {
     }
 
-    public Ingredient(String id, String icate, String name, float price, Status status) {
+    public Ingredient(String id, String icate, String name, float price, int status) {
         this.id = id;
         this.icate = icate;
         this.name = name;
@@ -60,11 +60,11 @@ public class Ingredient {
         this.price = price;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
     }
     

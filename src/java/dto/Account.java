@@ -14,18 +14,21 @@ public class Account {
     private int id;
     private String name;
     private String password;
-    private String phonenumber;
-    private Status status;
+    private int status;
 
     public Account() {
 
     }
 
-    public Account(int id, String name, String password, String phonenumber, Status status) {
+    public Account(int id, String name, String password, int status) {
         this.id = id;
         this.name = name;
         this.password = password;
-        this.phonenumber = phonenumber;
+        this.status = status;
+    }
+        public Account(String name, String password, int status) {
+        this.name = name;
+        this.password = password;
         this.status = status;
     }
 
@@ -53,19 +56,11 @@ public class Account {
         this.password = password;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

@@ -16,12 +16,12 @@ public class Meal {
     private String type;
     private String recipe;
     private float price;
-    private Status status;
+    private int status;
 
     public Meal() {
     }
 
-    public Meal(int id, String mcate, String name, String type, String recipe, float price, Status status) {
+    public Meal(int id, String mcate, String name, String type, String recipe, float price, int status) {
         this.id = id;
         this.mcate = mcate;
         this.name = name;
@@ -79,11 +79,11 @@ public class Meal {
         this.price = price;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
     }
     

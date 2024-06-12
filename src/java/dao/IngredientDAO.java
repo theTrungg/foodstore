@@ -6,6 +6,7 @@
 package dao;
 
 import dto.Ingredient;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,23 +15,28 @@ import dto.Ingredient;
 public class IngredientDAO implements CRUD<Ingredient>{
 
     @Override
-    public int create() {
+    public int create(Ingredient ingre) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+
+    @Override
+    public int update(Ingredient ingre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Ingredient read() {
+    public int detele(Ingredient ingre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int update() {
+    public ArrayList<Ingredient> read() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public int detele() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
+
     
 }

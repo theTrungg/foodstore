@@ -5,14 +5,15 @@
  */
 package dao;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author trung
  */
 public interface CRUD<T> {
-    public int create();
-    public T read();
-    public int update();
-    public int detele();
-    
+    public int create(T object);
+    public ArrayList<T> read();
+    public int update(T object);
+    public int detele(T object);
 }
