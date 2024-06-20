@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
-
-import java.util.ArrayList;
+package dto;
 
 /**
  *
  * @author trung
  */
-public interface CRUD<T> {
-    public int create(T object);
-    public T read(int id);
-    public int update(T object);
-    public int delete(T object);
+public class PersonalPlan {
+    private String id;
+    private int idAcc;
+    private String period;
+    private int idMeal;
 }
