@@ -15,23 +15,28 @@ import java.util.ArrayList;
 public class IngredientDAO implements CRUD<Ingredient>{
 
     @Override
-    public int create(Ingredient object) {
+    public int create(Ingredient ingre) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+
+    @Override
+    public int update(Ingredient ingre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Ingredient read(int id) {
+    public int detele(Ingredient ingre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int update(Ingredient object) {
+    public ArrayList<Ingredient> read() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public int delete(Ingredient object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
+
+    
 }
