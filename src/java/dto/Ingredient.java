@@ -11,7 +11,7 @@ package dto;
  */
 public class Ingredient {
 
-    private String id;
+    private int id;
     private String icate;
     private String name;
     private float price;
@@ -20,7 +20,7 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(String id, String icate, String name, float price, int status) {
+    public Ingredient(int id, String icate, String name, float price, int status) {
         this.id = id;
         this.icate = icate;
         this.name = name;
@@ -28,11 +28,11 @@ public class Ingredient {
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

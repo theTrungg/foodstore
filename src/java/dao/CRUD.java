@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public interface CRUD<T> {
     public int create(T object);
-    public ArrayList<T> read();
+    public T read(int id);
     public int update(T object);
-    public int detele(T object);
+    public int delete(T object);
 }

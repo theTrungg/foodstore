@@ -5,30 +5,25 @@
  */
 package dao;
 
-import dto.Meal;
-import java.util.ArrayList;
-import dto.Meal;
+import dto.Order;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import mylib.MyLib;
 
-/**
- *
- * @author trung
- */
-public class MealDAO implements CRUD<Meal>{
+public class OrderDAO implements CRUD<Order> {
 
     /**
-     * This function is used to create a meal in the database
+     * This function is used to create an order in the database
      *
-     * @param meal meal object to push to the database
+     * @param order order object to push to the database
      * @return an integer value representing the result of the operation
      */
     @Override
-    public int create(Meal meal) {
+    public int create(Order order) {
         int rs = 0;
         Connection cn = null;
         PreparedStatement pst = null;
@@ -36,16 +31,15 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "INSERT INTO [dbo].[Meal] ([Id], [MCate], [Name], [Type], [Recipe], [Price], [Status]) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO [dbo].[Order] ([Id], [IdAcc], [Date], [Process], [Status], [Price]) VALUES (?, ?, ?, ?, ?, ?)";
 
                 pst = cn.prepareStatement(sql);
-                pst.setInt(1, meal.getId());
-                pst.setString(2, meal.getMcate());
-                pst.setString(3, meal.getName());
-                pst.setString(4, meal.getType());
-                pst.setString(5, meal.getRecipe());
-                pst.setFloat(6, meal.getPrice());
-                pst.setInt(7, meal.getStatus());
+                pst.setInt(1, order.getId());
+                pst.setInt(2, order.getIdAcc());
+                pst.setDate(3, new Date(order.getDate().getTime()));
+                pst.setString(4, order.getProcess());
+                pst.setInt(5, order.getStatus());
+                pst.setFloat(6, order.getPrice());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction 
             }
@@ -75,14 +69,14 @@ public class MealDAO implements CRUD<Meal>{
     }
 
     /**
-     * This function is used to read a meal from the database by id
+     * This function is used to read an order from the database by id
      *
-     * @param id the id of the meal to read
-     * @return the meal object
+     * @param id the id of the order to read
+     * @return the order object
      */
     @Override
-    public Meal read(int id) {
-        Meal meal = null;
+    public Order read(int id) {
+        Order order = null;
         Connection cn = null;
         PreparedStatement pst = null;
 
@@ -90,20 +84,19 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "SELECT [MCate], [Name], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal] WHERE [Id] = ?";
+                String sql = "SELECT [IdAcc], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [Id] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        String mcate = rs.getString("MCate");
-                        String name = rs.getString("Name");
-                        String type = rs.getString("Type");
-                        String recipe = rs.getString("Recipe");
-                        float price = rs.getFloat("Price");
+                        int idAcc = rs.getInt("IdAcc");
+                        Date date = rs.getDate("Date");
+                        String process = rs.getString("Process");
                         int status = rs.getInt("Status");
+                        float price = rs.getFloat("Price");
 
-                        meal = new Meal(id, mcate, name, type, recipe, price, status);
+                        order = new Order(id, idAcc, date, process, status, price);
                     }
                 }
             }
@@ -122,17 +115,17 @@ public class MealDAO implements CRUD<Meal>{
                 ex.printStackTrace();
             }
         }
-        return meal;
+        return order;
     }
 
     /**
-     * This function is used to update a meal in the database
+     * This function is used to update an order in the database
      *
-     * @param meal the meal object with updated information
+     * @param order the order object with updated information
      * @return an integer value representing the result of the operation
      */
     @Override
-    public int update(Meal meal) {
+    public int update(Order order) {
         int rs = 0;
         Connection cn = null;
         PreparedStatement pst = null;
@@ -141,15 +134,14 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "UPDATE [dbo].[Meal] SET [MCate] = ?, [Name] = ?, [Type] = ?, [Recipe] = ?, [Price] = ?, [Status] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Order] SET [IdAcc] = ?, [Date] = ?, [Process] = ?, [Status] = ?, [Price] = ? WHERE [Id] = ?";
                 pst = cn.prepareStatement(sql);
-                pst.setString(1, meal.getMcate());
-                pst.setString(2, meal.getName());
-                pst.setString(3, meal.getType());
-                pst.setString(4, meal.getRecipe());
-                pst.setFloat(5, meal.getPrice());
-                pst.setInt(6, meal.getStatus());
-                pst.setInt(7, meal.getId());
+                pst.setInt(1, order.getIdAcc());
+                pst.setDate(2, new Date(order.getDate().getTime()));
+                pst.setString(3, order.getProcess());
+                pst.setInt(4, order.getStatus());
+                pst.setFloat(5, order.getPrice());
+                pst.setInt(6, order.getId());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction
             }
@@ -179,13 +171,13 @@ public class MealDAO implements CRUD<Meal>{
     }
 
     /**
-     * This function is used to delete (deactivate) a meal in the database
+     * This function is used to delete (deactivate) an order in the database
      *
-     * @param meal the meal object to delete (deactivate)
+     * @param order the order object to delete (deactivate)
      * @return an integer value representing the result of the operation
      */
     @Override
-    public int delete(Meal meal) {
+    public int delete(Order order) {
         int rs = 0;
         Connection cn = null;
         PreparedStatement pst = null;
@@ -194,10 +186,10 @@ public class MealDAO implements CRUD<Meal>{
             if (cn != null) {
                 cn.setAutoCommit(false);
 
-                String sql = "UPDATE [dbo].[Meal] SET [Status] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Order] SET [Status] = ? WHERE [Id] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, 0);
-                pst.setInt(2, meal.getId());
+                pst.setInt(2, order.getId());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction
             }
@@ -227,12 +219,12 @@ public class MealDAO implements CRUD<Meal>{
     }
 
     /**
-     * This function is used to get all meals from the database
+     * This function is used to get all orders from the database
      *
-     * @return a list of meal objects
+     * @return a list of order objects
      */
-    public ArrayList<Meal> getMeals() {
-        ArrayList<Meal> list = new ArrayList<>();
+    public ArrayList<Order> getOrders() {
+        ArrayList<Order> list = new ArrayList<>();
         Connection cn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -240,18 +232,17 @@ public class MealDAO implements CRUD<Meal>{
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [MCate], [Name], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal]";
+                String sql = "SELECT [Id], [IdAcc], [Date], [Process], [Status], [Price] FROM [dbo].[Order]";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 while (rs.next()) {
                     int id = rs.getInt("Id");
-                    String mcate = rs.getString("MCate");
-                    String name = rs.getString("Name");
-                    String type = rs.getString("Type");
-                    String recipe = rs.getString("Recipe");
-                    float price = rs.getFloat("Price");
+                    int idAcc = rs.getInt("IdAcc");
+                    Date date = rs.getDate("Date");
+                    String process = rs.getString("Process");
                     int status = rs.getInt("Status");
-                    list.add(new Meal(id, mcate, name, type, recipe, price, status));
+                    float price = rs.getFloat("Price");
+                    list.add(new Order(id, idAcc, date, process, status, price));
                 }
             }
         } catch (Exception ex) {
@@ -275,13 +266,13 @@ public class MealDAO implements CRUD<Meal>{
     }
 
     /**
-     * This function is used to get a meal from the database by name
+     * This function is used to get an order from the database by account id
      *
-     * @param name the name of the meal to get
-     * @return the meal object
+     * @param idAcc the id of the account to get the order
+     * @return the order object
      */
-    public Meal getMealByName(String name) {
-        Meal meal = null;
+    public Order getOrderByAccountId(int idAcc) {
+        Order order = null;
         Connection cn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -289,18 +280,17 @@ public class MealDAO implements CRUD<Meal>{
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [MCate], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal] WHERE [Name] = ?";
+                String sql = "SELECT [Id], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [IdAcc] = ?";
                 pst = cn.prepareStatement(sql);
-                pst.setString(1, name);
+                pst.setInt(1, idAcc);
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     int id = rs.getInt("Id");
-                    String mcate = rs.getString("MCate");
-                    String type = rs.getString("Type");
-                    String recipe = rs.getString("Recipe");
-                    float price = rs.getFloat("Price");
+                    Date date = rs.getDate("Date");
+                    String process = rs.getString("Process");
                     int status = rs.getInt("Status");
-                    meal = new Meal(id, mcate, name, type, recipe, price, status);
+                    float price = rs.getFloat("Price");
+                    order = new Order(id, idAcc, date, process, status, price);
                 }
             }
         } catch (Exception ex) {
@@ -320,17 +310,16 @@ public class MealDAO implements CRUD<Meal>{
                 ex.printStackTrace();
             }
         }
-        return meal;
+        return order;
     }
 
     /**
-     * This function is used to check if a meal is active
+     * This function is used to check if an order is active
      *
-     * @param meal the meal object to check
-     * @return true if the meal is active, false otherwise
+     * @param order the order object to check
+     * @return true if the order is active, false otherwise
      */
-    public boolean checkMeal(Meal meal) {
-        return meal.getStatus() == 1;
+    public boolean checkOrder(Order order) {
+        return order.getStatus() == 1;
     }
-
 }

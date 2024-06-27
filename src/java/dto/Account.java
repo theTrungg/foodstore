@@ -14,21 +14,25 @@ public class Account {
     private int id;
     private String name;
     private String password;
+    private String role;
     private int status;
 
     public Account() {
 
     }
 
-    public Account(int id, String name, String password, int status) {
+    public Account(int id, String name, String password, String role, int status) {
         this.id = id;
         this.name = name;
         this.password = password;
+        this.role = role;
         this.status = status;
     }
-        public Account(String name, String password, int status) {
+
+    public Account(String name, String password, int status) {
         this.name = name;
         this.password = password;
+        this.role = role;
         this.status = status;
     }
 
@@ -63,5 +67,14 @@ public class Account {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
 
 }

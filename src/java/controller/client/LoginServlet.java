@@ -3,20 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.client;
 
+import dao.AccountDAO;
+import dto.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author trung
  */
-public class MainController extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,25 +35,24 @@ public class MainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String url = "";
-            String ac = request.getParameter("action");
+            String userName = request.getParameter("txtname");
+            String password = request.getParameter("txtpassword");
+            AccountDAO d = new AccountDAO();
+            Account acc = d.getAccount(userName, password);
+            if (acc != null) {
+                if (acc.getStatus() == 1) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("LoginAccount", acc);
+                    if (acc.getRole().equalsIgnoreCase("Admin")) {
 
-            if (ac == null) {
-                url = IConstant.HOME;
-            }
-
-            switch (ac) {
-                case IConstant.HOME:
-                    url = "index.jsp";
-                    break;
-                case IConstant.LOGIN:
-                    url = "login.jsp";
-                    break;
-                case IConstant.REGISTER:
-                    url = "register.jsp";
-                    break;
-                default:
-                    throw new AssertionError();
+                    } else {
+                        // Code cho nay la account la Client
+                    }
+                } else {
+                    // Code cho nay la account disable
+                }
+            } else {
+                // Code cho nay la account khong dang nhap duoc
             }
         }
     }
