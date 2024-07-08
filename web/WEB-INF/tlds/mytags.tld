@@ -20,4 +20,9 @@
           <listener-class>com.mycompany.TagLibListener</listener-class> 
       </listener>
     -->
+  <tag>
+    <name>Avatar</name>
+    <tag-class>mytags.Avatar</tag-class>
+    <body-content>empty</body-content>
+  </tag>
 </taglib>

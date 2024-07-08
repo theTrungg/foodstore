@@ -32,14 +32,14 @@ public class AccountDetailDAO implements CRUD<AccountDetail>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "INSERT INTO [dbo].[AccountDetail] ([Id], [FullName], [Gender], [PhoneNumber], [Address], [Email], [Img]) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO [dbo].[AccountDetail] ([Id_acc], [FullName], [Gender], [PhoneNumber], [Address], [Email], [Img]) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, accDetail.getId());
-                pst.setString(2, accDetail.getFullName());
-                pst.setString(3, accDetail.getGender());
+                pst.setNString(2, accDetail.getFullName());
+                pst.setNString(3, accDetail.getGender());
                 pst.setString(4, accDetail.getPhoneNumber());
-                pst.setString(5, accDetail.getAddress());
+                pst.setNString(5, accDetail.getAddress());
                 pst.setString(6, accDetail.getEmail());
                 pst.setString(7, accDetail.getImg());
                 rs = pst.executeUpdate();
@@ -86,7 +86,7 @@ public class AccountDetailDAO implements CRUD<AccountDetail>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "SELECT [FullName], [Gender], [PhoneNumber], [Address], [Email], [Img] FROM [dbo].[AccountDetail] WHERE [Id] = ?";
+                String sql = "SELECT [FullName], [Gender], [PhoneNumber], [Address], [Email], [Img] FROM [dbo].[AccountDetail] WHERE [Id_acc] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
                 ResultSet rs = pst.executeQuery();
@@ -137,7 +137,7 @@ public class AccountDetailDAO implements CRUD<AccountDetail>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "UPDATE [dbo].[AccountDetail] SET [FullName] = ?, [Gender] = ?, [PhoneNumber] = ?, [Address] = ?, [Email] = ?, [Img] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[AccountDetail] SET [FullName] = ?, [Gender] = ?, [PhoneNumber] = ?, [Address] = ?, [Email] = ?, [Img] = ? WHERE [Id_acc] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setString(1, accDetail.getFullName());
                 pst.setString(2, accDetail.getGender());

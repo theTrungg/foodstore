@@ -19,7 +19,7 @@ import mylib.MyLib;
  *
  * @author trung
  */
-public class MealDAO implements CRUD<Meal>{
+public class MealDAO implements CRUD<Meal> {
 
     /**
      * This function is used to create a meal in the database
@@ -36,13 +36,12 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "INSERT INTO [dbo].[Meal] ([Id], [MCate], [Name], [Type], [Recipe], [Price], [Status]) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO [dbo].[Meal] ([Id_meal], [Id_category], [Name], [Recipe], [Price], [Status]) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, meal.getId());
                 pst.setString(2, meal.getMcate());
                 pst.setString(3, meal.getName());
-                pst.setString(4, meal.getType());
                 pst.setString(5, meal.getRecipe());
                 pst.setFloat(6, meal.getPrice());
                 pst.setInt(7, meal.getStatus());
@@ -90,20 +89,18 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "SELECT [MCate], [Name], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal] WHERE [Id] = ?";
+                String sql = "SELECT [Id_category], [Name], [Recipe], [Price], [Status] FROM [dbo].[Meal] WHERE [Id_meal] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        String mcate = rs.getString("MCate");
+                        String mcate = rs.getString("Id_category");
                         String name = rs.getString("Name");
-                        String type = rs.getString("Type");
                         String recipe = rs.getString("Recipe");
                         float price = rs.getFloat("Price");
                         int status = rs.getInt("Status");
-
-                        meal = new Meal(id, mcate, name, type, recipe, price, status);
+                        meal = new Meal(id, mcate, name, recipe, price, status);
                     }
                 }
             }
@@ -141,15 +138,14 @@ public class MealDAO implements CRUD<Meal>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "UPDATE [dbo].[Meal] SET [MCate] = ?, [Name] = ?, [Type] = ?, [Recipe] = ?, [Price] = ?, [Status] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Meal] SET [Id_category] = ?, [Name] = ?, [Recipe] = ?, [Price] = ?, [Status] = ? WHERE [Id_meal] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setString(1, meal.getMcate());
                 pst.setString(2, meal.getName());
-                pst.setString(3, meal.getType());
-                pst.setString(4, meal.getRecipe());
-                pst.setFloat(5, meal.getPrice());
-                pst.setInt(6, meal.getStatus());
-                pst.setInt(7, meal.getId());
+                pst.setString(3, meal.getRecipe());
+                pst.setFloat(4, meal.getPrice());
+                pst.setInt(5, meal.getStatus());
+                pst.setInt(6, meal.getId());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction
             }
@@ -194,7 +190,7 @@ public class MealDAO implements CRUD<Meal>{
             if (cn != null) {
                 cn.setAutoCommit(false);
 
-                String sql = "UPDATE [dbo].[Meal] SET [Status] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Meal] SET [Status] = ? WHERE [Id_meal] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, 0);
                 pst.setInt(2, meal.getId());
@@ -240,18 +236,21 @@ public class MealDAO implements CRUD<Meal>{
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [MCate], [Name], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal]";
+                String sql = "SELECT M.[Id_meal], M.[Id_category], M.[Name], M.[Recipe], M.[Price], M.[Status] , I.[Address]\n"
+                        + "FROM [dbo].[Meal] M\n"
+                        + "INNER JOIN [dbo].[MealImg] I\n"
+                        + "ON M.[Id_meal] = I.[Id_meal]";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 while (rs.next()) {
-                    int id = rs.getInt("Id");
-                    String mcate = rs.getString("MCate");
+                    int id = rs.getInt("Id_meal");
+                    String mcate = rs.getString("Id_category");
                     String name = rs.getString("Name");
-                    String type = rs.getString("Type");
                     String recipe = rs.getString("Recipe");
                     float price = rs.getFloat("Price");
                     int status = rs.getInt("Status");
-                    list.add(new Meal(id, mcate, name, type, recipe, price, status));
+                    String address = rs.getString("Address");
+                    list.add(new Meal(id, mcate, name, recipe, price, status, address));
                 }
             }
         } catch (Exception ex) {
@@ -280,8 +279,8 @@ public class MealDAO implements CRUD<Meal>{
      * @param name the name of the meal to get
      * @return the meal object
      */
-    public Meal getMealByName(String name) {
-        Meal meal = null;
+    public ArrayList<Meal> getMealByName(String name) {
+        ArrayList<Meal> list = new ArrayList<>();
         Connection cn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -289,18 +288,24 @@ public class MealDAO implements CRUD<Meal>{
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [MCate], [Type], [Recipe], [Price], [Status] FROM [dbo].[Meal] WHERE [Name] = ?";
+                String sql = "SELECT M.[Id_meal],M.[Name] ,M.[Id_category], M.[Recipe], M.[Price], M.[Status] , I.[Address]\n"
+                        + "FROM [dbo].[Meal] M\n"
+                        + "INNER JOIN [dbo].[MealImg] I\n"
+                        + "ON M.[Id_meal] = I.[Id_meal]\n"
+                        + "WHERE [Name] like  ?";
                 pst = cn.prepareStatement(sql);
-                pst.setString(1, name);
+                pst.setString(1, "%" + name + "%");
+
                 rs = pst.executeQuery();
-                if (rs.next()) {
-                    int id = rs.getInt("Id");
-                    String mcate = rs.getString("MCate");
-                    String type = rs.getString("Type");
+                while (rs.next()) {
+                    int id = rs.getInt("Id_meal");
+                    String mcate = rs.getString("Id_category");
+                    String mealname = rs.getString("Name");
                     String recipe = rs.getString("Recipe");
                     float price = rs.getFloat("Price");
                     int status = rs.getInt("Status");
-                    meal = new Meal(id, mcate, name, type, recipe, price, status);
+                    String address = rs.getString("Address");
+                    list.add(new Meal(id, mcate, mealname, recipe, price, status, address));
                 }
             }
         } catch (Exception ex) {
@@ -320,7 +325,7 @@ public class MealDAO implements CRUD<Meal>{
                 ex.printStackTrace();
             }
         }
-        return meal;
+        return list;
     }
 
     /**
@@ -333,4 +338,65 @@ public class MealDAO implements CRUD<Meal>{
         return meal.getStatus() == 1;
     }
 
+    /**
+     * This function is used to get all meals from the database by category
+     *
+     * @return a list of meal objects
+     */
+    public ArrayList<Meal> getMealsByCate(int[] cates) {
+        ArrayList<Meal> list = new ArrayList<>();
+        Connection cn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        try {
+            cn = MyLib.makeConnection();
+            if (cn != null) {
+                String sql = "SELECT M.[Id_meal],M.[Name] ,M.[Id_category], M.[Recipe], M.[Price], M.[Status] , I.[Address]\n"
+                        + "FROM [dbo].[Meal] M\n"
+                        + "INNER JOIN [dbo].[MealImg] I\n"
+                        + "ON M.[Id_meal] = I.[Id_meal]\n"
+                        + "WHERE  [Status] = 1 AND [Id_category] IN (";
+                for (int i = 0; i < cates.length; i++) {
+                    sql += "?";
+                    if (i < cates.length - 1) {
+                        sql += ", ";
+                    }
+                }
+                sql += ")";
+                pst = cn.prepareStatement(sql);
+                for (int i = 0; i < cates.length; i++) {
+                    pst.setInt(i + 1, cates[i]);
+                }
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("Id_meal");
+                    String mcate = rs.getString("Id_category");
+                    String name = rs.getString("Name");
+                    String recipe = rs.getString("Recipe");
+                    float price = rs.getFloat("Price");
+                    int status = rs.getInt("Status");
+                    String address = rs.getString("Address");
+                    list.add(new Meal(id, mcate, name, recipe, price, status, address));
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return list;
+    }
 }

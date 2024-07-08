@@ -23,17 +23,17 @@ import javax.servlet.http.HttpServletResponse;
  * @author trung
  */
 public class MainController implements Filter {
-    
+
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public MainController() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -60,8 +60,8 @@ public class MainController implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -99,24 +99,22 @@ public class MainController implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("MainController:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
-        
+
         Throwable problem = null;
         try {
-                        String url = "GetItemsController";
+            String url = "Home";
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse ros = (HttpServletResponse) response;
             String path = req.getRequestURI();
 
-            // Bypass static resources
-            if (path.startsWith(req.getContextPath() + "/Assets/css/")
-                    || path.startsWith(req.getContextPath() + "/Assets/Images/")
-                    || path.startsWith(req.getContextPath() + "/Js/")) {
+
+            if (path.endsWith(".css") || path.endsWith(".js") || path.contains(".jpg") || path.contains(".png")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -124,8 +122,9 @@ public class MainController implements Filter {
             String action = path.substring(path.lastIndexOf("/") + 1);
 
             if (action.isEmpty()) {
-                url = "home.jsp";
-            } else if (!action.contains(".jsp") && !action.contains(".html") && !action.contains(".htm")) {
+                url = "HomeServlet";
+            } else 
+                if (!action.contains(".jsp") && !action.contains(".html") && !action.contains(".htm")) {
                 url = action + "Servlet";
             } else {
                 url = action;
@@ -141,7 +140,7 @@ public class MainController implements Filter {
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -176,16 +175,16 @@ public class MainController implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("MainController:Initializing filter");
             }
         }
@@ -204,20 +203,20 @@ public class MainController implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -234,7 +233,7 @@ public class MainController implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -248,9 +247,9 @@ public class MainController implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

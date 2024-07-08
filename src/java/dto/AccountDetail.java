@@ -21,6 +21,16 @@ public class AccountDetail {
     public AccountDetail() {
     }
 
+    public AccountDetail(int id, String fullName, String gender, String phoneNumber, String address, String email) {
+        this.id = id;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.email = email;
+    }
+
+    
     public AccountDetail(int id, String fullName, String gender, String phoneNumber, String address, String email, String img) {
         this.id = id;
         this.fullName = fullName;

@@ -36,12 +36,13 @@ public class AccountDAO implements CRUD<Account> {
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "Insert [dbo].[Account] ([Username], [Password], [Status]) values (?,?,?)";
+                String sql = "Insert [dbo].[Account] ([Username], [Password],[Role] ,[Status]) values (?,?,?,?)";
 
                 pst = cn.prepareStatement(sql);
                 pst.setString(1, acc.getName());
                 pst.setString(2, acc.getPassword());
-                pst.setInt(3, 1);
+                pst.setString(3, "Client");
+                pst.setInt(4, 1);
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction 
             }
@@ -387,5 +388,47 @@ public class AccountDAO implements CRUD<Account> {
      */
     public boolean checkAccount(Account acc) {
         return acc.getStatus() == 1;
+    }
+        public int active(Account acc) {
+        int rs = 0;
+        Connection cn = null;
+        PreparedStatement pst = null;
+        try {
+            cn = MyLib.makeConnection();
+            if (cn != null) {
+                cn.setAutoCommit(false);
+
+                String sql = "Update [dbo].[Account]\n"
+                        + "Set [Status] = ?\n"
+                        + "Where [Id_acc] = ?";
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, 1);
+                pst.setInt(2, acc.getId());
+                rs = pst.executeUpdate();
+                cn.commit(); // Commit the transaction
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (cn != null) {
+                try {
+                    cn.rollback(); // Rollback the transaction if there is an error
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (cn != null) {
+                    cn.setAutoCommit(true); // Return to default AutoCommit state
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return rs;
     }
 }

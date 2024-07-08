@@ -13,22 +13,33 @@ public class Meal {
     private int id;
     private String mcate;
     private String name;
-    private String type;
     private String recipe;
     private float price;
     private int status;
+    private String address;
 
     public Meal() {
     }
 
-    public Meal(int id, String mcate, String name, String type, String recipe, float price, int status) {
+    public Meal(int id, String mcate, String name, String recipe, float price, int status) {
         this.id = id;
         this.mcate = mcate;
         this.name = name;
-        this.type = type;
         this.recipe = recipe;
         this.price = price;
         this.status = status;
+    }
+
+    
+    
+    public Meal(int id, String mcate, String name, String recipe, float price, int status, String address) {
+        this.id = id;
+        this.mcate = mcate;
+        this.name = name;
+        this.recipe = recipe;
+        this.price = price;
+        this.status = status;
+        this.address = address;
     }
 
     public int getId() {
@@ -55,14 +66,6 @@ public class Meal {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getRecipe() {
         return recipe;
     }
@@ -86,6 +89,21 @@ public class Meal {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Meal{" + "id=" + id + ", mcate=" + mcate + ", name=" + name + ", recipe=" + recipe + ", price=" + price + ", status=" + status + ", address=" + address + '}';
+    }
+
+
     
     
     

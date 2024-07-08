@@ -3,8 +3,9 @@
     Created on : Jun 22, 2024, 1:55:31 PM
     Author     : trung
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="/WEB-INF/tlds/mytags" prefix="t" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,14 +26,28 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
             rel="stylesheet"
             />
-        <link href="css/stylesheet.css" rel="stylesheet" />
+        <!--<link href="css/newcss.css" rel="stylesheet" />-->
+        <link href="css/menucss.css" rel="stylesheet" />
+        <link href="css/home.css" rel="stylesheet" />
+        <script src="js/checkpass.js" defer></script>
+        <script src="js/carousel.js" defer></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+        <style>
+            body {
 
+                /*                background-image: url('img/openart-image_yfh4QFPK_1719128796338_raw.jpg');
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-attachment: fixed;
+                                padding-top: 100px;*/
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary fixed-top">
             <div class="container">
                 <!-- Brand -->
-                <a class="navbar-brand me-auto" href="#">
+                <a class="navbar-brand me-auto" href="home.jsp">
                     <img
                         src="img/bg.ai_1719131872236.png"
                         height="60"
@@ -57,23 +72,42 @@
 
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="menu.jsp">Menu</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled"
-                               >Disabled</a
-                            >
+                        <li class="nav-item dropdown">
+                            <a
+                                data-mdb-dropdown-init
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarDropdown"
+                                role="button"
+                                aria-expanded="false"
+                                >
+                                Plan
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#">Recommend Plan</a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Personal Plan</a>
+                                </li>
+                            </ul>           
                         </li>
+
                     </ul>
-                    <form class="d-flex input-group w-auto">
+                    <div class="d-flex input-group w-auto" action="menu.jsp"  method="post">
                         <input
-                            type="search"
+                            type="text"
+                            name="txt"
                             class="form-control"
-                            placeholder="Type query"
+                            placeholder="Meal name"
                             aria-label="Search"
+                            oninput="searchByName(this)"
                             />
                         <button
                             data-mdb-ripple-init
@@ -83,82 +117,12 @@
                             >
                             Search
                         </button>
-                    </form>
+                    </div>
                 </div>
 
-                <!-- Right elements -->
                 <div class="d-flex align-items-center ">
-                    <!-- Icon -->
-                    <a class="text-reset me-3 fa-lg" href="#">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                    <!-- Icon -->
-
-                    <!-- Notifications -->
-                    <div class="dropdown">
-                        <a
-                            data-mdb-dropdown-init
-                            class="text-reset me-3 dropdown-toggle hidden-arrow"
-                            href="#"
-                            id="navbarDropdownMenuLink"
-                            role="button"
-                            aria-expanded="false"
-                            >
-                            <i class="fas fa-bell fa-lg"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
-                        </a>
-                        <ul
-                            class="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="navbarDropdownMenuLink"
-                            >
-                            <li>
-                                <a class="dropdown-item" href="#">Some news</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Another news</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Notifications -->
-
-                    <!-- Avatar -->
-                    <div class="dropdown">
-                        <a
-                            data-mdb-dropdown-init
-                            class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                            href="#"
-                            id="navbarDropdownMenuAvatar"
-                            role="button"
-                            aria-expanded="false"
-                            >
-                            <img
-                                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                class="rounded-circle"
-                                height="50"
-                                alt="Black and White Portrait of a Man"
-                                loading="lazy"
-                                />
-                        </a>
-                        <ul
-                            class="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="navbarDropdownMenuAvatar"
-                            >
-                            <li>
-                                <a class="dropdown-item" href="#">My profile</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Settings</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Avatar -->
+                    <t:Avatar></t:Avatar>
                 </div>
-                <!-- Right elements -->
+
             </div>
         </nav>

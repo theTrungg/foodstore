@@ -15,17 +15,30 @@ public class Ingredient {
     private String icate;
     private String name;
     private float price;
+    private int quantity;
     private int status;
+    private String address;
 
     public Ingredient() {
     }
 
-    public Ingredient(int id, String icate, String name, float price, int status) {
+    public Ingredient(int id, String icate, String name, float price, int quantity, int status) {
         this.id = id;
         this.icate = icate;
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
         this.status = status;
+    }
+
+    public Ingredient(int id, String icate, String name, float price, int quantity, int status, String address) {
+        this.id = id;
+        this.icate = icate;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.status = status;
+        this.address = address;
     }
 
     public int getId() {
@@ -60,6 +73,14 @@ public class Ingredient {
         this.price = price;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -67,7 +88,20 @@ public class Ingredient {
     public void setStatus(int status) {
         this.status = status;
     }
-    
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" + "id=" + id + ", icate=" + icate + ", name=" + name + ", price=" + price + ", quantity=" + quantity + ", status=" + status + ", address=" + address + '}';
+    }
+
     
 
 }

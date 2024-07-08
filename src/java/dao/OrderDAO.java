@@ -31,7 +31,7 @@ public class OrderDAO implements CRUD<Order> {
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "INSERT INTO [dbo].[Order] ([Id], [IdAcc], [Date], [Process], [Status], [Price]) VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO [dbo].[Order] ([Id_order], [Id_acc], [Date], [Process], [Status], [Price]) VALUES (?, ?, ?, ?, ?, ?)";
 
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, order.getId());
@@ -84,13 +84,13 @@ public class OrderDAO implements CRUD<Order> {
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "SELECT [IdAcc], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [Id] = ?";
+                String sql = "SELECT [Id_acc], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [Id_order] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        int idAcc = rs.getInt("IdAcc");
+                        int idAcc = rs.getInt("Id_acc");
                         Date date = rs.getDate("Date");
                         String process = rs.getString("Process");
                         int status = rs.getInt("Status");
@@ -134,7 +134,7 @@ public class OrderDAO implements CRUD<Order> {
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "UPDATE [dbo].[Order] SET [IdAcc] = ?, [Date] = ?, [Process] = ?, [Status] = ?, [Price] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Order] SET [Id_acc] = ?, [Date] = ?, [Process] = ?, [Status] = ?, [Price] = ? WHERE [Id_order] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, order.getIdAcc());
                 pst.setDate(2, new Date(order.getDate().getTime()));
@@ -186,7 +186,7 @@ public class OrderDAO implements CRUD<Order> {
             if (cn != null) {
                 cn.setAutoCommit(false);
 
-                String sql = "UPDATE [dbo].[Order] SET [Status] = ? WHERE [Id] = ?";
+                String sql = "UPDATE [dbo].[Order] SET [Status] = ? WHERE [Id_order] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, 0);
                 pst.setInt(2, order.getId());
@@ -232,12 +232,12 @@ public class OrderDAO implements CRUD<Order> {
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [IdAcc], [Date], [Process], [Status], [Price] FROM [dbo].[Order]";
+                String sql = "SELECT [Id_order], [Id_acc], [Date], [Process], [Status], [Price] FROM [dbo].[Order]";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 while (rs.next()) {
-                    int id = rs.getInt("Id");
-                    int idAcc = rs.getInt("IdAcc");
+                    int id = rs.getInt("Id_order");
+                    int idAcc = rs.getInt("Id_acc");
                     Date date = rs.getDate("Date");
                     String process = rs.getString("Process");
                     int status = rs.getInt("Status");
@@ -280,12 +280,12 @@ public class OrderDAO implements CRUD<Order> {
         try {
             cn = MyLib.makeConnection();
             if (cn != null) {
-                String sql = "SELECT [Id], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [IdAcc] = ?";
+                String sql = "SELECT [Id_order], [Date], [Process], [Status], [Price] FROM [dbo].[Order] WHERE [Id_acc] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, idAcc);
                 rs = pst.executeQuery();
                 if (rs.next()) {
-                    int id = rs.getInt("Id");
+                    int id = rs.getInt("Id_order");
                     Date date = rs.getDate("Date");
                     String process = rs.getString("Process");
                     int status = rs.getInt("Status");

@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String url = "login.jsp";
             String userName = request.getParameter("txtname");
             String password = request.getParameter("txtpassword");
             AccountDAO d = new AccountDAO();
@@ -44,16 +45,20 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("LoginAccount", acc);
                     if (acc.getRole().equalsIgnoreCase("Admin")) {
-
+                        url = "adminhome.jsp";
                     } else {
-                        // Code cho nay la account la Client
+                        url = "home.jsp";
                     }
                 } else {
-                    // Code cho nay la account disable
+                    request.setAttribute("message", "Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng thử lại.");
+                    request.setAttribute("messageType", "error");
                 }
             } else {
-                // Code cho nay la account khong dang nhap duoc
+                url = "login.jsp";
+                request.setAttribute("message", "Đăng nhập thất bại. Vui lòng thử lại.");
+                request.setAttribute("messageType", "error");
             }
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

@@ -29,11 +29,10 @@ public class Account {
         this.status = status;
     }
 
-    public Account(String name, String password, int status) {
+    public Account(String name, String password, String role) {
         this.name = name;
         this.password = password;
         this.role = role;
-        this.status = status;
     }
 
     public int getId() {
@@ -74,6 +73,11 @@ public class Account {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", name=" + name + ", password=" + password + ", role=" + role + ", status=" + status + '}';
     }
     
 

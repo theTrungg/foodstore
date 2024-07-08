@@ -29,14 +29,15 @@ public class IngredientDAO implements CRUD<Ingredient>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "Insert [dbo].[Ingredient] ([Id], [ICate], [Name], [Price], [Status]) values (?,?,?,?,?)";
+                String sql = "Insert [dbo].[Ingredient] ([Id_ingredient], [Id_category], [Name], [Price],[Quantity] , [Status]) values (?,?,?,?,?)";
 
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, ing.getId());
                 pst.setString(2, ing.getIcate());
                 pst.setString(3, ing.getName());
                 pst.setFloat(4, ing.getPrice());
-                pst.setInt(5, ing.getStatus());
+                pst.setInt(5, ing.getQuantity());
+                pst.setInt(6, ing.getStatus());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction 
             }
@@ -75,18 +76,19 @@ public class IngredientDAO implements CRUD<Ingredient>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "Select [ICate], [Name], [Price], [Status] From [dbo].[Ingredient] Where [Id] = ?";
+                String sql = "Select [Id_category], [Name], [Price], [Quantity], [Status] From [dbo].[Ingredient] Where [Id_ingredient] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        String icate = rs.getString("ICate");
+                        String icate = rs.getString("Id_category");
                         String name = rs.getString("Name");
                         float price = rs.getFloat("Price");
+                        int quantity = rs.getInt("Quantity");
                         int status = rs.getInt("Status");
 
-                        ing = new Ingredient(id, icate, name, price, status);
+                        ing = new Ingredient(id, icate, name, price, quantity, status);
                     }
                 }
             }
@@ -118,13 +120,14 @@ public class IngredientDAO implements CRUD<Ingredient>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "Update [dbo].[Ingredient] Set [ICate] = ?, [Name] = ?, [Price] = ?, [Status] = ? Where [Id] = ?";
+                String sql = "Update [dbo].[Ingredient] Set [Id_category] = ?, [Name] = ?, [Price] = ?, [Quantity] = ?, [Status] = ? Where [Id_ingredient] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setString(1, ing.getIcate());
                 pst.setString(2, ing.getName());
                 pst.setFloat(3, ing.getPrice());
                 pst.setInt(4, ing.getStatus());
-                pst.setInt(5, ing.getId());
+                pst.setInt(5, ing.getQuantity());
+                pst.setInt(6, ing.getId());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction
             }
@@ -163,7 +166,7 @@ public class IngredientDAO implements CRUD<Ingredient>{
             if (cn != null) {
                 cn.setAutoCommit(false);
 
-                String sql = "Update [dbo].[Ingredient] Set [Status] = ? Where [Id] = ?";
+                String sql = "Update [dbo].[Ingredient] Set [Status] = ? Where [Id_ingredient] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, 0);
                 pst.setInt(2, ing.getId());
@@ -206,18 +209,19 @@ public class IngredientDAO implements CRUD<Ingredient>{
             if (cn != null) {
                 cn.setAutoCommit(false);
 
-                String sql = "Select [Id], [ICate], [Name], [Price], [Status] From [dbo].[Ingredient]";
+                String sql = "Select [Id_ingredient], [Id_category], [Name], [Price], [Quantity], [Status] From [dbo].[Ingredient]";
                 Statement st = cn.createStatement();
                 rs = st.executeQuery(sql);
                 if (rs != null) {
                     while (rs.next()) {
-                        int id = rs.getInt("Id");
-                        String icate = rs.getString("ICate");
+                        int id = rs.getInt("Id_ingredient");
+                        String icate = rs.getString("Id_category");
                         String name = rs.getString("Name");
                         float price = rs.getFloat("Price");
+                        int quantity = rs.getInt("Quantity");
                         int status = rs.getInt("Status");
 
-                        Ingredient ing = new Ingredient(id, icate, name, price, status);
+                        Ingredient ing = new Ingredient(id, icate, name, price, quantity, status);
                         list.add(ing);
                     }
                 }
@@ -252,18 +256,19 @@ public class IngredientDAO implements CRUD<Ingredient>{
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "Select [Id], [ICate], [Price], [Status] From [dbo].[Ingredient] Where [Name] = ?";
+                String sql = "Select [Id_ingredient], [Id_category], [Price], [Quantity], [Status] From [dbo].[Ingredient] Where [Name] = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setString(1, name);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        int id = rs.getInt("Id");
-                        String icate = rs.getString("ICate");
+                        int id = rs.getInt("Id_ingredient");
+                        String icate = rs.getString("Id_category");
                         float price = rs.getFloat("Price");
+                        int quantity = rs.getInt("Quantity");
                         int status = rs.getInt("Status");
 
-                        ing = new Ingredient(id, icate, name, price, status);
+                        ing = new Ingredient(id, icate, name, price, quantity, status);
                     }
                 }
             }
@@ -289,6 +294,45 @@ public class IngredientDAO implements CRUD<Ingredient>{
         return ing.getStatus() == 1;
     }
 
+    public int active(Ingredient ing) {
+        int rs = 0;
+        Connection cn = null;
+        PreparedStatement pst = null;
+        try {
+            cn = MyLib.makeConnection();
+            if (cn != null) {
+                cn.setAutoCommit(false);
 
+                String sql = "Update [dbo].[Ingredient] Set [Status] = ? Where [Id_ingredient] = ?";
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, 1);
+                pst.setInt(2, ing.getId());
+                rs = pst.executeUpdate();
+                cn.commit(); // Commit the transaction
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (cn != null) {
+                try {
+                    cn.rollback(); // Rollback the transaction if there is an error
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (cn != null) {
+                    cn.setAutoCommit(true); // Return to default AutoCommit state
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return rs;
+    }
 
 }
