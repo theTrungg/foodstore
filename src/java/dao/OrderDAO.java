@@ -31,15 +31,14 @@ public class OrderDAO implements CRUD<Order> {
             cn = MyLib.makeConnection();
             if (cn != null) {
                 cn.setAutoCommit(false);
-                String sql = "INSERT INTO [dbo].[Order] ([Id_order], [Id_acc], [Date], [Process], [Status], [Price]) VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO [dbo].[Order] ([Id_acc], [Date], [Process], [Status], [Price]) VALUES (?, ?, ?, ?, ?)";
 
                 pst = cn.prepareStatement(sql);
-                pst.setInt(1, order.getId());
-                pst.setInt(2, order.getIdAcc());
-                pst.setDate(3, new Date(order.getDate().getTime()));
-                pst.setString(4, order.getProcess());
-                pst.setInt(5, order.getStatus());
-                pst.setFloat(6, order.getPrice());
+                pst.setInt(1, order.getIdAcc());
+                pst.setDate(2, new Date(System.currentTimeMillis()));
+                pst.setString(3, order.getProcess());
+                pst.setInt(4, order.getStatus());
+                pst.setFloat(5, order.getPrice());
                 rs = pst.executeUpdate();
                 cn.commit(); // Commit the transaction 
             }

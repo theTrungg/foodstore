@@ -6,18 +6,28 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<style>
+
+    .information p{
+        color: #ffffff94;
+    }
+    .social{
+        background-color: #e0dcdc;
+        padding: 0 0 0 15px;
+    }
+</style>
 <!-- Footer -->
-<footer class="text-center text-lg-start bg-body-tertiary text-muted ">
+<footer class="text-center text-lg-start text-muted " style="background-color: #333333;">
     <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <!-- Left -->
-        <div class="me-5 d-none d-lg-block">
+        <div class="me-5 d-none d-lg-block" style="color:white;">
             <span>Liên hệ với chúng tôi qua:</span>
         </div>
         <!-- Left -->
 
         <!-- Right -->
-        <div>
+        <div class="social">
             <a href="" class="me-4 text-reset">
                 <i class="fab fa-facebook-f"></i>
             </a>
@@ -33,7 +43,7 @@
     <!-- Section: Social media -->
 
     <!-- Section: Links  -->
-    <section class="">
+    <section class="" style="color:white;">
         <div class="container text-center text-md-start mt-5">
             <!-- Grid row -->
             <div class="row mt-3">
@@ -89,23 +99,44 @@
         <a class="text-reset fw-bold" href="">TheTrung</a>
     </div>
     <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05) ;color:white;">
+        <!--Back to top-->
+        <div class="back-to-top" style="    margin-bottom: 10px;">
+            <a style="    color: #49a3b5; /* Màu vàng nhạt */" id="back-to-top" href="">Back to top</a>
+        </div>
+        <!--Back to top-->
 </footer>
 <!-- Footer -->
 <script>
     function searchByName(param) {
-    var txtSearch = param.value;
-    $.ajax({
-    url: "/FoodStore/Search",
+        var txtSearch = param.value;
+        $.ajax({
+            url: "/FoodStore/Search",
             type: "GET",
             data: {
-            txt: txtSearch
+                txt: txtSearch
             },
-    success: function (data) {
-    var row = document.getElementById("testsearch");
-    row.innerHTML = data;
-    },
-    });
+            success: function (data) {
+                var row = document.getElementById("testsearch");
+                row.innerHTML = data;
+            },
+        });
     }
+    function hideInputIfNotMenuPage() {
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage !== 'menu.jsp') {
+            document.getElementById('searchInput').style.display = 'none';
+        }
+    }
+    document.getElementById("back-to-top").addEventListener("click", function (event) {
+        event.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    // Gọi hàm khi trang được tải
+    window.onload = hideInputIfNotMenuPage;
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script

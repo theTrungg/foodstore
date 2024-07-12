@@ -33,28 +33,29 @@
         <script src="js/carousel.js" defer></script>
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
         <style>
-            body {
 
-                /*                background-image: url('img/openart-image_yfh4QFPK_1719128796338_raw.jpg');
-                                background-size: cover;
-                                background-repeat: no-repeat;
-                                background-attachment: fixed;
-                                padding-top: 100px;*/
-            }
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary fixed-top">
+        <nav class="navbar navbar-expand-md navbar-light  fixed-top"  style="background-color: #DEEBF3;">
             <div class="container">
                 <!-- Brand -->
-                <a class="navbar-brand me-auto" href="home.jsp">
-                    <img
-                        src="img/bg.ai_1719131872236.png"
-                        height="60"
-                        alt="Logo"
-                        loading="lazy"
-                        />
-                </a>
+                <div style="    
+                     height: 100px;
+                     width: 100px;
+                     border-radius: 50%;
+                     background-color: #8ba39f52;
+                     position: relative;
+                     ">
+                    <a class="navbar-brand me-auto" href="Home" style="position: absolute;top: 15%; right: 15%;">
+                        <img
+                            src="img/bg.ai_1719131872236.png"
+                            height="60"
+                            alt="Logo"
+                            loading="lazy"
+                            />
+                    </a>
+                </div>
                 <!-- Brand-->
 
                 <button
@@ -100,8 +101,10 @@
                         </li>
 
                     </ul>
+
                     <div class="d-flex input-group w-auto" action="menu.jsp"  method="post">
                         <input
+                            id="searchInput"
                             type="text"
                             name="txt"
                             class="form-control"
@@ -112,8 +115,9 @@
                         <button
                             data-mdb-ripple-init
                             class="btn btn-outline-primary"
-                            type="button"
+                            type="button"   
                             data-mdb-ripple-color="dark"
+                            onclick="window.location.href = 'menu.jsp'"
                             >
                             Search
                         </button>

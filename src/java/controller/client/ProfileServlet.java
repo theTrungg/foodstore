@@ -5,7 +5,6 @@
  */
 package controller.client;
 
-import dao.AccountDAO;
 import dao.AccountDetailDAO;
 import dto.Account;
 import dto.AccountDetail;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class ProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,31 +33,21 @@ public class UserDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("LoginAccount");
+            AccountDetailDAO d = new AccountDetailDAO();
+            AccountDetail AccD = d.read(acc.getId()); 
+            String url = "";
+            if (AccD != null ) {
+                url ="profile.jsp";
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                url = "userdetail.jsp";
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

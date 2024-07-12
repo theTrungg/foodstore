@@ -68,6 +68,34 @@
         <servlet-name>UserDetailServlet</servlet-name>
         <servlet-class>controller.client.UserDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.client.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <servlet-class>controller.client.AddToCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCartServlet</servlet-name>
+        <servlet-class>controller.client.EditCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckOutServlet</servlet-name>
+        <servlet-class>controller.client.CheckOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUser</servlet-name>
+        <servlet-class>controller.client.UpdateUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateMeal</servlet-name>
+        <servlet-class>controller.admin.UpdateMeal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateIngre</servlet-name>
+        <servlet-class>controller.admin.UpdateIngre</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -111,6 +139,34 @@
     <servlet-mapping>
         <servlet-name>UserDetailServlet</servlet-name>
         <url-pattern>/UserDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <url-pattern>/AddToCartServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCartServlet</servlet-name>
+        <url-pattern>/EditCartServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckOutServlet</servlet-name>
+        <url-pattern>/CheckOutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUser</servlet-name>
+        <url-pattern>/UpdateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateMeal</servlet-name>
+        <url-pattern>/UpdateMeal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateIngre</servlet-name>
+        <url-pattern>/UpdateIngre</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

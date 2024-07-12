@@ -9,6 +9,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@include file="header.jsp" %>
+<style>
+    body{
+        background-color: #a3c7dd59;
+    }
+    .listmeal img:hover{
+       transform: scale(1.1)
+    }
+</style>
 <div id="carouselBanner" class="carousel slide " data-mdb-ride="carousel" data-mdb-carousel-init>
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -49,39 +57,16 @@
 </h3>
 <section class="listmeal">
 
-        <div class="wrapper wrapper-list">
+        <div class="wrapper wrapper-list carousel-1">
             <i id="left" class="fa-solid fa-angle-left"></i>
             <ul class="carousel carousel-list">
-                <li class="card">
-                    <div class="img"><img src="img/Logo (1).png" alt="img"></div>
-                    <h2>Blanche Pearson</h2>
-                    <span>Sales Manager</span>
+                <c:forEach var="meal1" items="<%=list1%>">
+                <li class="card card-meal">
+                    <div class="img"><img style="border-radius: 15px; margin-top: 20px; transition: transform 0.5s ease;" src="${meal1.address}" alt="img"></div>
+                    <h2>${meal1.name}</h2>
+                    <span>${meal1.price}</span>
                 </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-2.jpg" alt="img"></div>
-                    <h2>Joenas Brauers</h2>
-                    <span>Web Developer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-3.jpg" alt="img" ></div>
-                    <h2>Lariach French</h2>
-                    <span>Online Teacher</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-4.jpg" alt="img"></div>
-                    <h2>James Khosravi</h2>
-                    <span>Freelancer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-5.jpg" alt="img"></div>
-                    <h2>Kristina Zasiadko</h2>
-                    <span>Bank Manager</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-6.jpg" alt="img" ></div>
-                    <h2>Donald Horton</h2>
-                    <span>App Designer</span>
-                </li>
+                </c:forEach>
             </ul>
             <i id="right" class="fa-solid fa-angle-right"></i>
         </div>
@@ -96,43 +81,19 @@
 </h3>
 <section class="listmeal">
 
-<!--
-        <div class="wrapper">
+        <div class="wrapper wrapper-list carousel-2">
             <i id="left" class="fa-solid fa-angle-left"></i>
-            <ul class="carousel">
-                <li class="card">
-                    <div class="img"><img src="img/Logo (1).png" alt="img" draggable="false"></div>
-                    <h2>Blanche Pearson</h2>
-                    <span>Sales Manager</span>
+            <ul class="carousel carousel-list">
+                <c:forEach var="meal2" items="<%=list2%>">
+                <li class="card card-meal">
+                    <div class="img"><img style="border-radius: 15px; margin-top: 20px; transition: transform 0.5s ease;" src="${meal2.address}" alt="img"></div>
+                    <h2>${meal2.name}</h2>
+                    <span>${meal2.price}</span>
                 </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-2.jpg" alt="img" draggable="false"></div>
-                    <h2>Joenas Brauers</h2>
-                    <span>Web Developer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-3.jpg" alt="img" draggable="false"></div>
-                    <h2>Lariach French</h2>
-                    <span>Online Teacher</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-4.jpg" alt="img" draggable="false"></div>
-                    <h2>James Khosravi</h2>
-                    <span>Freelancer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-5.jpg" alt="img" draggable="false"></div>
-                    <h2>Kristina Zasiadko</h2>
-                    <span>Bank Manager</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-6.jpg" alt="img" draggable="false"></div>
-                    <h2>Donald Horton</h2>
-                    <span>App Designer</span>
-                </li>
+                </c:forEach>
             </ul>
             <i id="right" class="fa-solid fa-angle-right"></i>
-        </div>-->
+        </div>
 </section>
 
 <%
@@ -144,44 +105,21 @@
 </h3>
 <section class="listmeal">
 
-<!--        <div class="wrapper">
+          <div class="wrapper wrapper-list carousel-3">
             <i id="left" class="fa-solid fa-angle-left"></i>
-            <ul class="carousel">
-                <li class="card">
-                    <div class="img"><img src="img/Logo (1).png" alt="img" draggable="false"></div>
-                    <h2>Blanche Pearson</h2>
-                    <span>Sales Manager</span>
+            <ul class="carousel carousel-list">
+                <c:forEach var="meal3" items="<%=list3%>">
+                    <li class="card card-meal">
+                    <div class="img"><img style="border-radius: 15px; margin-top: 20px; transition: transform 0.5s ease;" src="${meal3.address}" alt="img"></div>
+                    <h2>${meal3.name}</h2>
+                    <span>${meal3.price}</span>
                 </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-2.jpg" alt="img" draggable="false"></div>
-                    <h2>Joenas Brauers</h2>
-                    <span>Web Developer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-3.jpg" alt="img" draggable="false"></div>
-                    <h2>Lariach French</h2>
-                    <span>Online Teacher</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-4.jpg" alt="img" draggable="false"></div>
-                    <h2>James Khosravi</h2>
-                    <span>Freelancer</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-5.jpg" alt="img" draggable="false"></div>
-                    <h2>Kristina Zasiadko</h2>
-                    <span>Bank Manager</span>
-                </li>
-                <li class="card">
-                    <div class="img"><img src="images/img-6.jpg" alt="img" draggable="false"></div>
-                    <h2>Donald Horton</h2>
-                    <span>App Designer</span>
-                </li>
+                </c:forEach>
             </ul>
             <i id="right" class="fa-solid fa-angle-right"></i>
-        </div>-->
+        </div>
 </section>
-<div class="row container-fluid mt-5">
+<div class="row container-fluid mt-5" style="margin-bottom: 100px">
     <div class="col-md-4 text-center">
         <i class="fas fa-box fa-3x"></i>
         <h4>Giao hàng tận nơi</h4>

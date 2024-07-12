@@ -29,7 +29,7 @@
             }
         }
     </style>
-    <div class="card " id="loginform">
+    <div class="card " id="loginform" >
         <div class="row g-0 d-flex align-items-center">
             <div class="col-lg-3"></div>
             <div class="col-lg-2 d-none d-lg-flex">
@@ -53,9 +53,9 @@
                         </div>
 
                         <!-- 2 column grid layout for inline styling -->
-                        <div class="row mb-4">
+<!--                        <div class="row mb-4">
                             <div class="col d-flex justify-content-center">
-                                <!-- Checkbox -->
+                                 Checkbox 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
                                     <label class="form-check-label" for="form2Example31"> Remember me </label>
@@ -63,10 +63,10 @@
                             </div>
 
                             <div class="col">
-                                <!-- Simple link -->
+                                 Simple link 
                                 <a href="#!">Forgot password?</a>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block">Đăng nhập </button>

@@ -5,7 +5,6 @@
  */
 package controller.client;
 
-import dao.AccountDAO;
 import dao.AccountDetailDAO;
 import dto.Account;
 import dto.AccountDetail;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class UpdateUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,29 +35,33 @@ public class UserDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
 
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("LoginAccount");
+            AccountDetailDAO d = new AccountDetailDAO();
+            if (acc != null) {
+                String name = request.getParameter("name");
+                String email = request.getParameter("email");
+                String gender = request.getParameter("gender");
+                String phone = request.getParameter("phone");
+                String address = request.getParameter("address");
+                String img = request.getParameter("img");
+
+                AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email, img);
+                if (d.update(accD) != 0) {
+                    request.setAttribute("message", "Cập nhật thành công!");
+                    request.setAttribute("messageType", "success");
+                } else {
+                    request.setAttribute("message", "Cập nhật thất bại.");
+                    request.setAttribute("messageType", "error");
+                }
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

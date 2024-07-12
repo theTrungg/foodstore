@@ -8,22 +8,6 @@ and open the template in the editor.
     Author     : trung
 */
 
-/* Import Google font - Poppins 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-}*/
-/*body {
-    display: flex;
-    padding: 0 35px;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(to left top, #031A9A, #8B53FF);
-}*/
 .listmeal {
     display: flex;
     padding: 0 35px;
@@ -131,5 +115,16 @@ and open the template in the editor.
 @media screen and (max-width: 600px) {
     .wrapper .carousel {
         grid-auto-columns: 100%;
+    }
+    .card-meal {
+        margin-bottom: 15px;    margin-bottom: 15px;
+        background: #cae4e5c4;
+        border: 1px solid #a6a0a0d9; 
+    }
+    body{
+        background-color: #a3c7dd59;
+    }
+    .listmeal img:hover{
+        transform: scale(1.1)
     }
 }

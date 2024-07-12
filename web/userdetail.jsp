@@ -85,8 +85,8 @@
                                         <div class="col-md-12 mb-4">
 
                                             <div data-mdb-input-init class="form-outline">
-                                                <input type="text" id="firstName" class="form-control form-control-lg" name="address" />
-                                                <label class="form-label" for="firstName">Địa chỉ</label>
+                                                <input type="text" id="address" class="form-control form-control-lg" name="address" />
+                                                <label class="form-label" for="address">Địa chỉ</label>
                                             </div>
 
                                         </div>

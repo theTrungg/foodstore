@@ -239,7 +239,8 @@ public class MealDAO implements CRUD<Meal> {
                 String sql = "SELECT M.[Id_meal], M.[Id_category], M.[Name], M.[Recipe], M.[Price], M.[Status] , I.[Address]\n"
                         + "FROM [dbo].[Meal] M\n"
                         + "INNER JOIN [dbo].[MealImg] I\n"
-                        + "ON M.[Id_meal] = I.[Id_meal]";
+                        + "ON M.[Id_meal] = I.[Id_meal]"
+                        + "Where [Status] = 1";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 while (rs.next()) {

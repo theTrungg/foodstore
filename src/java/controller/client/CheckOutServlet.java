@@ -5,12 +5,15 @@
  */
 package controller.client;
 
-import dao.AccountDAO;
-import dao.AccountDetailDAO;
+import dao.OrderDAO;
+import dao.OrderDetailDAO;
 import dto.Account;
-import dto.AccountDetail;
+import dto.Meal;
+import dto.Order;
+import dto.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class CheckOutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,31 +37,31 @@ public class UserDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("LoginAccount");
+            if (acc != null) {
+                HashMap<Meal, Integer> cart = (HashMap<Meal, Integer>) session.getAttribute("cart");
+                String total = request.getParameter("total");
+                Order order = new Order(acc.getId(), "Ready", 1, Float.parseFloat(total));
+                OrderDAO o = new OrderDAO();
+                o.create(order);
 
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+                Order tmp = o.getOrderByAccountId(acc.getId());
+                OrderDetailDAO od = new OrderDetailDAO();
+                for (Meal meal : cart.keySet()) {
+                    String type = request.getParameter(meal.getId() + "");
+                    OrderDetail orderdetail = new OrderDetail(tmp.getId(), meal.getId(), cart.get(meal), type);
+                    od.create(orderdetail);
+                }
+                session.removeAttribute("cart");
+                request.getRequestDispatcher("home.jsp").forward(request, response);
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

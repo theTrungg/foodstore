@@ -59,7 +59,7 @@ public class Avatar extends SimpleTagSupport {
                 out.println("</a>");
                 out.println("<ul class=\"dropdown-menu dropdown-menu-end\" aria-labelledby=\"navbarDropdownMenuAvatar\">");
                 out.println("<li>");
-                out.println("<a class=\"dropdown-item\" href=\"userdetail.jsp\">My profile</a>");
+                out.println("<a class=\"dropdown-item\" href=\"Profile\">My profile</a>");
                 out.println("</li>");
                 out.println("<li>");
                 out.println("<a class=\"dropdown-item\" href=\"#\">Settings</a>");

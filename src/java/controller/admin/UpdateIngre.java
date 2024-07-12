@@ -3,25 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.client;
+package controller.admin;
 
-import dao.AccountDAO;
-import dao.AccountDetailDAO;
-import dto.Account;
-import dto.AccountDetail;
+import dao.IngredientDAO;
+import dto.Ingredient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class UpdateIngre extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,31 +31,35 @@ public class UserDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /* TODO output your page here. You may use following sample code. */
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
+        try (PrintWriter out = response.getWriter()) {
 
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+            String id = request.getParameter("id");
+            IngredientDAO d = new IngredientDAO();
+            Ingredient ingre = d.read(Integer.parseInt(id));
+            if (ingre != null) {
+                String icate = request.getParameter("icate");
+                String name = request.getParameter("name");
+                String price = request.getParameter("price");
+                String quantity = request.getParameter("quantity");
+                String status = request.getParameter("status");
+                String address = request.getParameter("address");
+
+                int flag = d.update(new Ingredient(Integer.parseInt(id), icate, name, Float.parseFloat(price), Integer.parseInt(quantity), Integer.parseInt(status), address));
+                if (flag != 0) {
+                    request.setAttribute("message", "Cập nhật thành công!");
+                    request.setAttribute("messageType", "success");
+                } else {
+                    request.setAttribute("message", "Cập nhật thất bại!");
+                    request.setAttribute("messageType", "error");
+                }
+                request.getRequestDispatcher("GetIngredient").forward(request, response);
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                request.getRequestDispatcher("GetIngredient").forward(request, response);
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

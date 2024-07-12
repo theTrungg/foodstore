@@ -3,7 +3,9 @@ import dao.AccountDAO;
 import dao.MealDAO;
 import dto.Account;
 import dto.Meal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,11 +19,16 @@ import java.util.List;
 public class test {
 
     public static void main(String[] args) {
-        MealDAO d = new MealDAO();
-        List<Meal> list = d.getMeals();
-        
-        for (Meal meal : list) {
-            System.out.println(meal.toString());;
+        HashMap<String, Integer> list = new HashMap<>();
+        list.merge("Test 1", 1, Integer::sum);
+        list.merge("Test 1", 1, Integer::sum);
+        list.merge("Test 2", 1, Integer::sum);
+        list.merge("Test 3", 1, Integer::sum);
+        list.merge("Test 1", 1, Integer::sum);
+        for (Map.Entry<String, Integer> entry : list.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key +" "+ value);
         }
     }
 }

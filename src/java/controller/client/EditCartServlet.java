@@ -5,12 +5,11 @@
  */
 package controller.client;
 
-import dao.AccountDAO;
-import dao.AccountDetailDAO;
-import dto.Account;
-import dto.AccountDetail;
+import dao.MealDAO;
+import dto.Meal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class EditCartServlet extends HttpServlet {
+
+    private static final String REMOVE = "remove";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,31 +35,33 @@ public class UserDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            String id = request.getParameter("mealid");
+            String action = request.getParameter("action");
+            HttpSession session = request.getSession();
+            HashMap<Meal, Integer> cart = (HashMap<Meal, Integer>) session.getAttribute("cart");
 
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+            MealDAO d = new MealDAO();
+            Meal meal = d.read(Integer.parseInt(id.trim()));
+            if (cart != null) {
+                if (cart.containsKey(meal)) {
+                if (REMOVE.equalsIgnoreCase(action)) {  
+                    cart.remove(meal);
+                } else {
+                    String newQuantity = request.getParameter("txtquantity");
+                    cart.put(meal, Integer.parseInt(newQuantity.trim()));
+                }
+                }
+                session.setAttribute("cart", cart);
+                request.getRequestDispatcher("viewcart.jsp").forward(request, response);
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                out.println("<h2>Giỏ hàng của bạn trống</h2>");
+                request.getRequestDispatcher("viewcart.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

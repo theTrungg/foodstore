@@ -12,6 +12,7 @@ import java.sql.Date;
  * @author trung
  */
 public class Order {
+
     private int id;
     private int idAcc;
     private Date date;
@@ -20,6 +21,13 @@ public class Order {
     private float price;
 
     public Order() {
+    }
+
+    public Order( int idAcc, String process, int status, float price) {
+        this.idAcc = idAcc;
+        this.process = process;
+        this.status = status;
+        this.price = price;
     }
 
     public Order(int id, int idAcc, Date date, String process, int status, float price) {
@@ -78,6 +86,5 @@ public class Order {
     public void setPrice(float price) {
         this.price = price;
     }
-    
-    
+
 }

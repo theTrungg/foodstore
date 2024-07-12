@@ -5,12 +5,12 @@
  */
 package controller.client;
 
-import dao.AccountDAO;
-import dao.AccountDetailDAO;
+import dao.MealDAO;
 import dto.Account;
-import dto.AccountDetail;
+import dto.Meal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author trung
  */
-public class UserDetailServlet extends HttpServlet {
+public class AddToCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,34 +34,43 @@ public class UserDetailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("LoginAccount");
-        AccountDetailDAO d = new AccountDetailDAO();
-        if (acc != null) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String gender = request.getParameter("gender");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            MealDAO d = new MealDAO();
+            HttpSession session = request.getSession();
+            String id = request.getParameter("mealid");
+            Meal meal = d.read(Integer.parseInt(id.trim()));
+            String url = request.getHeader("referer");
+            Account acc = (Account) session.getAttribute("LoginAccount");
+            if (acc != null) {
+                if (url == null || url.isEmpty()) {
+                    url = "menu.jsp";
+                } else {
+                    String action = url.substring(url.lastIndexOf("/") + 1);
 
-            AccountDetail accD = new AccountDetail(acc.getId(), name, gender, phone, address, email);
-            if (d.create(accD) != 0) {
-                request.setAttribute("message", "Đăng ký thành công!");
-                request.setAttribute("messageType", "success");
+                    if (action.equals("TestURL") || action.equals("TestURLServlet")) {
+                        url = "menu.jsp";
+                    } else {
+                        url = action;
+                    }
+                }
+                if (meal != null) {
+                    HashMap<Meal, Integer> cart = (HashMap<Meal, Integer>) session.getAttribute("cart");
+                    if (cart == null) {
+                        cart = new HashMap<>();
+                    }
+                    cart.merge(meal, 1, Integer::sum);
+                    session.setAttribute("cart", cart);
+                    response.sendRedirect(url);
+                }
             } else {
-                request.setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
-                request.setAttribute("messageType", "error");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
